@@ -57,14 +57,14 @@ func Migrate(pool *pgxpool.Pool) error {
 	}
 
 	defer func(db *sql.DB) {
-		err := db.Close()
-		if err != nil {
-
+		e := db.Close()
+		if e != nil {
+			err = e
 		}
 	}(db)
 
 	if err := goose.Up(db, MigrationDirectory); err != nil {
 		return err
 	}
-	return nil
+	return err
 }
